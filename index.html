@@ -3,21 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#f6f3ed">
-  <title>県庁所在地クイズ｜にっぽん県めぐり</title>
+  <meta name="theme-color" content="#0d1312">
+  <title>日本地図クイズ｜都道府県</title>
   <style>
     :root {
-      color-scheme: light;
-      --ink: #19332f;
-      --muted: #74837b;
-      --paper: #f6f3ed;
-      --card: #fffefa;
-      --green: #2f7560;
-      --green-dark: #205a49;
-      --mint: #e6f2e9;
-      --orange: #e89556;
-      --line: #e9e7df;
-      --shadow: 0 14px 40px rgba(37, 61, 48, .08);
+      color-scheme: dark;
+      --ink: #e6efeb;
+      --muted: #9aaea6;
+      --paper: #0d1312;
+      --card: #151e1c;
+      --green: #67c59a;
+      --green-dark: #a0e4bd;
+      --mint: #20372f;
+      --orange: #f2a36d;
+      --line: #2b3935;
+      --shadow: 0 14px 40px rgba(0, 0, 0, .28);
+      --surface: #1b2623;
+      --surface-hover: #22312c;
+      --success-bg: #1d382b;
+      --success-ink: #a3e3b4;
+      --error-bg: #3a2724;
+      --error-ink: #f0a08d;
     }
 
     * { box-sizing: border-box; }
@@ -25,7 +31,7 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(ellipse at 12% 0%, rgba(234, 215, 177, .25), transparent 34rem),
+        radial-gradient(ellipse at 12% 0%, rgba(69, 119, 96, .18), transparent 34rem),
         var(--paper);
       color: var(--ink);
       font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
@@ -40,7 +46,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid rgba(25, 51, 47, .08);
+      border-bottom: 1px solid rgba(154, 174, 166, .12);
     }
     .brand {
       display: flex; align-items: center; gap: 10px;
@@ -55,7 +61,7 @@
     .header-stats { display: flex; gap: 8px; }
     .stat-pill {
       display: flex; align-items: center; gap: 6px; border: 1px solid var(--line);
-      border-radius: 999px; padding: 8px 11px; background: rgba(255, 254, 250, .85);
+      border-radius: 999px; padding: 8px 11px; background: var(--card);
       font-size: 12px; font-weight: 800; white-space: nowrap;
     }
     .stat-pill strong { color: var(--green); }
@@ -63,7 +69,7 @@
     .screen { animation: appear .24s ease-out; }
     @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
     .panel {
-      background: var(--card); border: 1px solid rgba(25, 51, 47, .07);
+      background: var(--card); border: 1px solid var(--line);
       border-radius: 26px; padding: clamp(20px, 5vw, 36px); box-shadow: var(--shadow);
     }
     .hero { text-align: center; margin-bottom: 28px; }
@@ -83,17 +89,18 @@
     .choice-row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .choice-btn {
       min-height: 52px; border: 1px solid var(--line); border-radius: 15px;
-      background: #fff; color: var(--ink); padding: 11px 12px; font-weight: 800;
+      background: var(--surface); color: var(--ink); padding: 11px 12px; font-weight: 800;
       font-size: 14px; cursor: pointer; transition: .16s ease;
     }
     .choice-btn[aria-pressed="true"] {
       border-color: var(--green); background: var(--mint); color: var(--green-dark);
       box-shadow: inset 0 0 0 1px var(--green);
     }
+    .type-btn:last-child { grid-column: 1 / -1; }
     .choice-btn:active, .answer-btn:active, .primary-btn:active { transform: scale(.98); }
     select {
       width: 100%; min-height: 51px; border: 1px solid var(--line); border-radius: 14px;
-      background: #fff; color: var(--ink); padding: 0 14px; font-weight: 700;
+      background: var(--surface); color: var(--ink); padding: 0 14px; font-weight: 700;
     }
     .primary-btn {
       width: 100%; min-height: 56px; margin-top: 27px; border: 0; border-radius: 17px;
@@ -107,8 +114,8 @@
       border: 1px solid var(--line); border-radius: 17px; font-size: 13px; font-weight: 800;
     }
     .game-top strong { color: var(--green); font-size: 17px; }
-    .progress { height: 7px; overflow: hidden; border-radius: 999px; background: #e4e6df; margin-bottom: 14px; }
-    .progress > div { height: 100%; background: linear-gradient(90deg, #6ea78b, var(--green)); transition: width .3s ease; }
+    .progress { height: 7px; overflow: hidden; border-radius: 999px; background: #27332f; margin-bottom: 14px; }
+    .progress > div { height: 100%; background: linear-gradient(90deg, #4a9d77, var(--green)); transition: width .3s ease; }
     .question-card { padding: clamp(20px, 5vw, 30px); }
     .question-kicker { color: var(--muted); font-size: 12px; font-weight: 800; text-align: center; }
     .question-text {
@@ -120,22 +127,22 @@
     .answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .answer-btn {
       min-height: 62px; padding: 12px 10px; border: 1px solid var(--line);
-      border-radius: 15px; background: #fff; color: var(--ink); font-size: 14px;
+      border-radius: 15px; background: var(--surface); color: var(--ink); font-size: 14px;
       font-weight: 800; line-height: 1.45; cursor: pointer; transition: .15s ease;
     }
-    .answer-btn:hover:not(:disabled) { border-color: #9dc3aa; background: #f4faf4; }
+    .answer-btn:hover:not(:disabled) { border-color: var(--green); background: var(--surface-hover); }
     .answer-btn:disabled { cursor: default; }
-    .answer-btn.correct { background: #e5f4e8; border-color: #58a576; color: #205a39; }
-    .answer-btn.wrong { background: #fff0ec; border-color: #e08b74; color: #9a4535; }
+    .answer-btn.correct { background: var(--success-bg); border-color: var(--green); color: var(--success-ink); }
+    .answer-btn.wrong { background: var(--error-bg); border-color: #c97763; color: var(--error-ink); }
     .hint-btn {
       display: block; margin: 15px auto 0; border: 0; background: none; color: var(--green);
       padding: 8px 12px; font-size: 12px; font-weight: 800; cursor: pointer;
     }
-    .hint-text { margin: 5px 0 0; text-align: center; color: #8c6930; font-size: 12px; font-weight: 700; }
-    .feedback { margin-top: 15px; padding: 16px; border-radius: 17px; background: #f6f8f2; border: 1px solid var(--line); }
+    .hint-text { margin: 5px 0 0; text-align: center; color: #e6bd77; font-size: 12px; font-weight: 700; }
+    .feedback { margin-top: 15px; padding: 16px; border-radius: 17px; background: var(--surface); border: 1px solid var(--line); }
     .feedback-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
     .feedback-badge { font-size: 13px; font-weight: 900; color: var(--green-dark); }
-    .feedback-badge.is-wrong { color: #a44c3d; }
+    .feedback-badge.is-wrong { color: var(--error-ink); }
     .next-btn {
       flex: 0 0 auto; min-height: 42px; padding: 0 14px; border: 0; border-radius: 12px;
       background: var(--green); color: white; font-size: 13px; font-weight: 900; cursor: pointer;
@@ -143,32 +150,46 @@
     .fact-title { margin: 13px 0 5px; font-size: 19px; font-weight: 900; }
     .fact-capital { margin: 0; color: var(--muted); font-size: 13px; }
     .fact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 13px; }
-    .fact-item { padding: 12px; background: white; border: 1px solid var(--line); border-radius: 13px; }
+    .fact-item { padding: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 13px; }
     .fact-label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; font-weight: 900; letter-spacing: .06em; }
     .fact-value { font-size: 13px; font-weight: 800; line-height: 1.6; }
-    .map-wrap { margin-top: 12px; padding: 12px; background: #f4f8f2; border-radius: 14px; }
+    .map-wrap { margin-top: 12px; padding: 12px; background: #192622; border-radius: 14px; }
     .map-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
     .map-heading strong { font-size: 12px; }
     .map-heading span { color: var(--muted); font-size: 10px; }
     .japan-map { display: block; width: min(100%, 310px); height: 228px; margin: 0 auto; }
-    .island { fill: #dce8d7; stroke: #b6c8b1; stroke-width: 1.4; stroke-linejoin: round; }
-    .map-dot { fill: #9db19a; stroke: #f4f8f2; stroke-width: 1.5; }
-    .map-dot.active { fill: #e58245; stroke: #fff; stroke-width: 2.5; }
-    .map-label { fill: #776b56; font-size: 9px; font-weight: 800; }
-    .map-label.active { fill: #a95120; font-size: 11px; }
+    .island { fill: #31453d; stroke: #597267; stroke-width: 1.4; stroke-linejoin: round; }
+    .map-dot { fill: #829b8d; stroke: #192622; stroke-width: 1.5; }
+    .map-dot.active { fill: var(--orange); stroke: #fff2e8; stroke-width: 2.5; }
+    .map-label { fill: #a9b5ad; font-size: 9px; font-weight: 800; }
+    .map-label.active { fill: #ffc18e; font-size: 11px; }
+    .question-map-wrap { margin: 0 auto 12px; padding: 10px 12px; background: #192622; border-radius: 16px; }
+    .question-map { display: block; width: min(100%, 300px); height: 270px; margin: 0 auto; }
+    .map-controls { display: flex; justify-content: center; align-items: center; gap: 7px; margin: 4px auto 8px; }
+    .map-control-btn {
+      min-width: 38px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line);
+      border-radius: 10px; background: var(--surface); color: var(--ink); font-size: 15px;
+      font-weight: 900; cursor: pointer;
+    }
+    .map-control-btn:hover:not(:disabled) { border-color: var(--green); background: var(--surface-hover); }
+    .map-control-btn:disabled { opacity: .45; cursor: default; }
+    .map-zoom-level { min-width: 42px; color: var(--muted); font-size: 11px; font-weight: 800; text-align: center; }
+    .question-map .map-target { fill: var(--orange); stroke: #fff2e8; stroke-width: 3; }
+    .question-map .map-target-ring { fill: none; stroke: var(--orange); stroke-width: 2; opacity: .7; }
+    .question-map-prompt { margin: 0 0 3px; text-align: center; color: var(--muted); font-size: 11px; font-weight: 800; }
     .result-screen { text-align: center; }
     .result-icon { font-size: 42px; }
     .result-screen h2 { margin: 8px 0 5px; font-size: 29px; }
     .result-screen > p { margin: 0; color: var(--muted); font-size: 14px; }
     .result-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 23px 0; }
-    .result-stat { padding: 14px 7px; border: 1px solid var(--line); border-radius: 15px; background: white; }
+    .result-stat { padding: 14px 7px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
     .result-stat span { display: block; color: var(--muted); font-size: 10px; font-weight: 800; }
     .result-stat strong { display: block; margin-top: 4px; color: var(--green); font-size: 23px; }
     .secondary-btn {
       width: 100%; min-height: 50px; margin-top: 10px; border: 1px solid var(--line);
-      border-radius: 15px; background: white; color: var(--ink); font-size: 14px; font-weight: 900; cursor: pointer;
+      border-radius: 15px; background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 900; cursor: pointer;
     }
-    footer { padding: 0 0 max(20px, env(safe-area-inset-bottom)); text-align: center; color: #929b91; font-size: 10px; }
+    footer { padding: 0 0 max(20px, env(safe-area-inset-bottom)); text-align: center; color: var(--muted); font-size: 10px; }
     .hidden { display: none !important; }
     @media (max-width: 430px) {
       .shell { width: min(100% - 22px, 760px); }
@@ -196,7 +217,7 @@
     <header>
       <button class="brand" type="button" onclick="showScreen('start-screen')" aria-label="ホームに戻る">
         <span class="brand-mark" aria-hidden="true">🗾</span>
-        <span class="brand-name">にっぽん県めぐり</span>
+        <span class="brand-name">日本地図クイズ</span>
       </button>
       <div class="header-stats" aria-label="プレイ記録">
         <div class="stat-pill">🔥 <strong id="streak-count">0</strong><span>連続</span></div>
@@ -206,16 +227,17 @@
 
     <main>
       <section id="start-screen" class="screen panel">
-        <div class="hero">
-          <span class="eyebrow">🌿 47都道府県を旅しよう</span>
-          <h1>県庁所在地クイズ</h1>
-          <p>県名と県庁所在地を覚えて、<br>日本の名所や名物にもくわしくなろう。</p>
+          <div class="hero">
+            <span class="eyebrow">🗾 47都道府県を旅しよう</span>
+            <h1>日本地図クイズ</h1>
+            <p>地図から県名を見つけたり、県名と県庁所在地を覚えたり。<br>日本の名所や名物にもくわしくなろう。</p>
         </div>
         <div class="setting-group">
           <p class="section-label">出題形式</p>
           <div class="choice-row two">
             <button type="button" class="choice-btn type-btn" data-type="prefectureToCapital" aria-pressed="true">県名 → 県庁所在地</button>
             <button type="button" class="choice-btn type-btn" data-type="capitalToPrefecture" aria-pressed="false">県庁所在地 → 県名</button>
+            <button type="button" class="choice-btn type-btn" data-type="mapToPrefecture" aria-pressed="false">🗾 地図から県名</button>
           </div>
         </div>
         <div class="setting-group">
@@ -252,6 +274,27 @@
         <div class="panel question-card">
           <p id="question-kicker" class="question-kicker">この都道府県の県庁所在地は？</p>
           <h2 id="question-text" class="question-text"></h2>
+          <div id="question-map-wrap" class="question-map-wrap hidden">
+            <p class="question-map-prompt">県庁所在地付近のオレンジ色の地点を見つけよう</p>
+            <div class="map-controls" role="group" aria-label="出題地図のズーム">
+              <button class="map-control-btn" type="button" data-map-id="question-map" data-zoom="out" aria-label="地図を縮小">−</button>
+              <span class="map-zoom-level" id="question-map-zoom-level">100%</span>
+              <button class="map-control-btn" type="button" data-map-id="question-map" data-zoom="in" aria-label="地図を拡大">＋</button>
+              <button class="map-control-btn" type="button" data-map-id="question-map" data-zoom="reset" aria-label="地図の拡大をリセット">リセット</button>
+            </div>
+            <svg id="question-map" class="question-map" viewBox="0 0 300 500" role="img" aria-labelledby="question-map-title question-map-desc">
+              <title id="question-map-title">都道府県を探す日本地図</title>
+              <desc id="question-map-desc">日本地図上の県庁所在地付近にあるオレンジ色の地点から、都道府県を選んでください。</desc>
+              <path class="island" d="M197 8l17 8 14 15-3 19-9 13-7 19-14 15-13-7-7-20-10-12 5-16 12-10 4-16z"/>
+              <path class="island" d="M172 104l12 10-5 18-12 8-7-13z"/>
+              <path class="island" d="M165 131l12 15-2 23-10 21-7 24-12 22-4 24-12 23-7 25-13 25-10 27-16 18-15-5-7-12 7-16 15-11 7-20 13-12 4-22 12-17 2-23 13-16 1-24 13-19 2-27 12-16z"/>
+              <path class="island" d="M100 357l13 7 3 16-8 19-15 13-12-5-2-12 10-16z"/>
+              <path class="island" d="M87 394l9 9-5 18-15 18-15-2 4-14 13-17z"/>
+              <path class="island" d="M61 442l8 3-4 11-10-2z"/>
+              <path class="island" d="M44 471l8 2-2 5-8-1z"/>
+              <g id="question-map-marker"></g>
+            </svg>
+          </div>
           <p id="question-sub" class="question-sub">正しい答えをひとつ選んでね</p>
           <div id="options-container" class="answers"></div>
           <button id="hint-button" class="hint-btn" type="button">💡 ヒントを見る</button>
@@ -270,6 +313,12 @@
           </div>
           <div class="map-wrap">
             <div class="map-heading"><strong>📍 日本地図での位置</strong><span id="map-region"></span></div>
+            <div class="map-controls" role="group" aria-label="解説地図のズーム">
+              <button class="map-control-btn" type="button" data-map-id="japan-map" data-zoom="out" aria-label="地図を縮小">−</button>
+              <span class="map-zoom-level" id="japan-map-zoom-level">100%</span>
+              <button class="map-control-btn" type="button" data-map-id="japan-map" data-zoom="in" aria-label="地図を拡大">＋</button>
+              <button class="map-control-btn" type="button" data-map-id="japan-map" data-zoom="reset" aria-label="地図の拡大をリセット">リセット</button>
+            </div>
             <svg id="japan-map" class="japan-map" viewBox="0 0 300 500" role="img" aria-labelledby="map-title map-desc">
               <title id="map-title">日本地図と正解の都道府県の位置</title>
               <desc id="map-desc">都道府県庁所在地のおおよその位置を示す地図です。</desc>
@@ -299,7 +348,7 @@
         <button class="secondary-btn" type="button" onclick="showScreen('start-screen')">設定を変えて挑戦する</button>
       </section>
     </main>
-    <footer>日本の県庁所在地・名所・名物を楽しく学ぼう</footer>
+    <footer>地図から県名を見つけて、日本の県庁所在地・名所・名物を楽しく学ぼう</footer>
   </div>
 
   <script>
@@ -369,6 +418,8 @@
     };
     const $ = (id) => document.getElementById(id);
     const scoreKey = 'prefectural_capital_quiz_highscore';
+    const mapZoomStates = new Map();
+    const mapView = { width: 300, height: 500, min: 1, max: 4, step: 1.5 };
 
     function showScreen(id) {
       ['start-screen', 'game-screen', 'result-screen'].forEach(screen => $(screen).classList.add('hidden'));
@@ -399,6 +450,9 @@
     $('retry-button').addEventListener('click', startGame);
     $('next-button').addEventListener('click', nextQuestion);
     $('hint-button').addEventListener('click', toggleHint);
+    document.querySelectorAll('.map-control-btn').forEach(button => {
+      button.addEventListener('click', () => changeMapZoom(button.dataset.mapId, button.dataset.zoom));
+    });
     $('high-score').textContent = localStorage.getItem(scoreKey) || '0';
 
     function startGame() {
@@ -445,9 +499,16 @@
       const total = state.mode === 'standard' ? state.questions.length : null;
       $('question-tracker').textContent = total ? `第 ${state.index + 1} 問 / ${total}` : `第 ${state.index + 1} 問`;
       $('progress-bar').style.width = total ? `${(state.index / total) * 100}%` : `${(state.timeLeft / 60) * 100}%`;
-      $('question-kicker').textContent = state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
+      const isMapQuestion = state.type === 'mapToPrefecture';
+      $('question-kicker').textContent = isMapQuestion
+        ? '地図を見て都道府県を選ぼう'
+        : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
       $('question-text').textContent = state.type === 'prefectureToCapital' ? current.name : current.capital;
+      $('question-text').classList.toggle('hidden', isMapQuestion);
+      $('question-map-wrap').classList.toggle('hidden', !isMapQuestion);
+      if (isMapQuestion) drawQuestionMap(current);
       $('question-sub').textContent = state.type === 'prefectureToCapital' ? '正しい市の名前を選んでね' : '正しい都道府県名を選んでね';
+      if (isMapQuestion) $('question-sub').textContent = '正しい都道府県名を選んでね';
 
       const correctAnswer = state.type === 'prefectureToCapital' ? current.capital : current.name;
       const pool = state.questions.filter(item => item !== current);
@@ -472,9 +533,7 @@
     function toggleHint() {
       const current = state.questions[state.index];
       const hint = $('hint-text');
-      hint.textContent = state.type === 'prefectureToCapital'
-        ? `ヒント：${current.region}地方にあります`
-        : `ヒント：${current.region}地方にあります`;
+      hint.textContent = `ヒント：${current.region}地方にあります`;
       hint.classList.toggle('hidden');
     }
 
@@ -513,18 +572,18 @@
       const dots = $('map-dots');
       dots.replaceChildren();
       const ns = 'http://www.w3.org/2000/svg';
+      resetMapZoom('japan-map', selected);
       prefectures.forEach(item => {
-        const x = 68 + (item.lon - 127.3) * 8.2;
-        const y = 33 + (45.2 - item.lat) * 20.7;
+        const { x, y } = mapPoint(item);
         const circle = document.createElementNS(ns, 'circle');
-        circle.setAttribute('cx', x.toFixed(1));
-        circle.setAttribute('cy', y.toFixed(1));
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y);
         circle.setAttribute('r', item === selected ? '6.3' : '3.2');
         circle.setAttribute('class', item === selected ? 'map-dot active' : 'map-dot');
         if (item === selected) {
           const label = document.createElementNS(ns, 'text');
-          label.setAttribute('x', Math.min(270, x + 8).toFixed(1));
-          label.setAttribute('y', (y - 7).toFixed(1));
+          label.setAttribute('x', Math.min(270, Number(x) + 8).toFixed(1));
+          label.setAttribute('y', (Number(y) - 7).toFixed(1));
           label.setAttribute('class', 'map-label active');
           label.textContent = item.name;
           dots.append(circle, label);
@@ -532,6 +591,64 @@
           dots.appendChild(circle);
         }
       });
+    }
+
+    function drawQuestionMap(selected) {
+      const marker = $('question-map-marker');
+      marker.replaceChildren();
+      const ns = 'http://www.w3.org/2000/svg';
+      const { x, y } = mapPoint(selected);
+      resetMapZoom('question-map', selected);
+      const ring = document.createElementNS(ns, 'circle');
+      ring.setAttribute('cx', x);
+      ring.setAttribute('cy', y);
+      ring.setAttribute('r', '11');
+      ring.setAttribute('class', 'map-target-ring');
+      const dot = document.createElementNS(ns, 'circle');
+      dot.setAttribute('cx', x);
+      dot.setAttribute('cy', y);
+      dot.setAttribute('r', '5.5');
+      dot.setAttribute('class', 'map-target');
+      marker.append(ring, dot);
+    }
+
+    function changeMapZoom(mapId, action) {
+      const current = mapZoomStates.get(mapId);
+      if (!current) return;
+      const scale = action === 'reset'
+        ? mapView.min
+        : Math.min(mapView.max, Math.max(mapView.min, current.scale * (action === 'in' ? mapView.step : 1 / mapView.step)));
+      applyMapZoom(mapId, { ...current, scale });
+    }
+
+    function resetMapZoom(mapId, center) {
+      const point = mapPoint(center);
+      applyMapZoom(mapId, {
+        scale: mapView.min,
+        center: { x: Number(point.x), y: Number(point.y) }
+      });
+    }
+
+    function applyMapZoom(mapId, zoom) {
+      mapZoomStates.set(mapId, zoom);
+      const svg = $(mapId);
+      const width = mapView.width / zoom.scale;
+      const height = mapView.height / zoom.scale;
+      svg.setAttribute('viewBox', `${zoom.center.x - width / 2} ${zoom.center.y - height / 2} ${width} ${height}`);
+      const percentage = Math.round(zoom.scale * 100);
+      $(`${mapId}-zoom-level`).textContent = `${percentage}%`;
+      document.querySelectorAll(`.map-control-btn[data-map-id="${mapId}"]`).forEach(button => {
+        button.disabled = button.dataset.zoom === 'in'
+          ? zoom.scale === mapView.max
+          : button.dataset.zoom === 'out' && zoom.scale === mapView.min;
+      });
+    }
+
+    function mapPoint(item) {
+      return {
+        x: (68 + (item.lon - 127.3) * 8.2).toFixed(1),
+        y: (33 + (45.2 - item.lat) * 20.7).toFixed(1)
+      };
     }
 
     function updateScore() {
