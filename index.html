@@ -174,8 +174,7 @@
     .map-control-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--surface-hover); }
     .map-control-btn:disabled { opacity: .45; cursor: default; }
     .map-zoom-level { min-width: 42px; color: var(--muted); font-size: 11px; font-weight: 800; text-align: center; }
-    .question-map .map-target { fill: var(--orange); stroke: #fff2e8; stroke-width: 3; }
-    .question-map .map-target-ring { fill: none; stroke: var(--orange); stroke-width: 2; opacity: .7; }
+    .question-map .prefecture-target { fill: #e69b55; stroke: #fff2e8; stroke-width: 1.5; }
     .question-map-prompt { margin: 0 0 3px; text-align: center; color: var(--muted); font-size: 11px; font-weight: 800; }
     .result-screen { text-align: center; }
     .result-icon { font-size: 42px; }
@@ -275,7 +274,7 @@
           <p id="question-kicker" class="question-kicker">この都道府県の県庁所在地は？</p>
           <h2 id="question-text" class="question-text"></h2>
           <div id="question-map-wrap" class="question-map-wrap hidden">
-            <p class="question-map-prompt">県庁所在地付近のオレンジ色の地点を見つけよう</p>
+            <p class="question-map-prompt">色が変わった都道府県を選ぼう</p>
             <div class="map-controls" role="group" aria-label="出題地図のズーム">
               <button class="map-control-btn" type="button" data-map-id="question-map" data-zoom="out" aria-label="地図を縮小">−</button>
               <span class="map-zoom-level" id="question-map-zoom-level">100%</span>
@@ -284,9 +283,8 @@
             </div>
             <svg id="question-map" class="question-map" viewBox="0 0 300 500" role="img" aria-labelledby="question-map-title question-map-desc">
               <title id="question-map-title">都道府県を探す日本地図</title>
-              <desc id="question-map-desc">日本地図上の県庁所在地付近にあるオレンジ色の地点から、都道府県を選んでください。</desc>
+              <desc id="question-map-desc">色が変わった都道府県を選んでください。</desc>
               <g class="map-base"></g>
-              <g id="question-map-marker"></g>
             </svg>
           </div>
           <p id="question-sub" class="question-sub">正しい答えをひとつ選んでね</p>
@@ -465,6 +463,7 @@
     const scoreKey = 'prefectural_capital_quiz_highscore';
     const mapZoomStates = new Map();
     const mapView = { width: 340, height: 400, min: 1, max: 4, step: 1.5 };
+    const questionMapMaxZoom = 12;
     const prefectureShapes = $('prefecture-map-shapes').content.querySelector('g');
     document.querySelectorAll('.map-base').forEach(map => map.append(prefectureShapes.cloneNode(true)));
 
@@ -561,7 +560,19 @@
       const pool = state.questions.filter(item => item !== current);
       const sameRegion = shuffle(pool.filter(item => item.region === current.region));
       const otherRegions = shuffle(pool.filter(item => item.region !== current.region));
-      const options = shuffle([current, ...[...sameRegion, ...otherRegions].slice(0, 3)]);
+      let distractors = [...sameRegion, ...otherRegions].slice(0, 3);
+      if (state.type === 'mapToPrefecture') {
+        const nearestPrefecture = [...prefectures]
+          .filter(item => item !== current)
+          .sort((a, b) => prefectureDistance(current, a) - prefectureDistance(current, b))[0];
+        distractors = [...new Set([
+          nearestPrefecture,
+          ...sameRegion,
+          ...otherRegions,
+          ...shuffle(prefectures.filter(item => item !== current))
+        ])].slice(0, 3);
+      }
+      const options = shuffle([current, ...distractors]);
       const container = $('options-container');
       container.replaceChildren();
       options.forEach(item => {
@@ -641,22 +652,64 @@
     }
 
     function drawQuestionMap(selected) {
-      const marker = $('question-map-marker');
-      marker.replaceChildren();
-      const ns = 'http://www.w3.org/2000/svg';
-      const { x, y } = mapPoint(selected);
-      resetMapZoom('question-map', selected);
-      const ring = document.createElementNS(ns, 'circle');
-      ring.setAttribute('cx', x);
-      ring.setAttribute('cy', y);
-      ring.setAttribute('r', '11');
-      ring.setAttribute('class', 'map-target-ring');
-      const dot = document.createElementNS(ns, 'circle');
-      dot.setAttribute('cx', x);
-      dot.setAttribute('cy', y);
-      dot.setAttribute('r', '5.5');
-      dot.setAttribute('class', 'map-target');
-      marker.append(ring, dot);
+      const map = $('question-map');
+      map.querySelectorAll('.prefecture-target').forEach(shape => shape.classList.remove('prefecture-target'));
+      const prefectureIndex = prefectures.indexOf(selected);
+      const prefectureCode = `JP-${String(prefectureIndex + 1).padStart(2, '0')}`;
+      const shape = map.querySelector(`[data-code="${prefectureCode}"]`);
+      shape.classList.add('prefecture-target');
+      focusQuestionMap(selected, shape);
+    }
+
+    function focusQuestionMap(selected, shape) {
+      const point = mapPoint(selected);
+      const bounds = nearestShapeBounds(shape, { x: Number(point.x), y: Number(point.y) });
+      const scale = Math.min(questionMapMaxZoom, mapView.width * 0.75 / bounds.width, mapView.height * 0.75 / bounds.height);
+      applyMapZoom('question-map', {
+        scale,
+        center: { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height / 2 },
+        focus: { x: Number(point.x), y: Number(point.y) }
+      });
+    }
+
+    function nearestShapeBounds(shape, point) {
+      const tokens = shape.getAttribute('d').match(/[MLZ]|-?(?:\d+\.?\d*|\.\d+)/g);
+      const components = [];
+      let bounds;
+      for (let i = 0; i < tokens.length;) {
+        const command = tokens[i++];
+        if (command === 'Z') continue;
+        const x = Number(tokens[i++]);
+        const y = Number(tokens[i++]);
+        if (command === 'M') {
+          bounds = { minX: x, maxX: x, minY: y, maxY: y };
+          components.push(bounds);
+        } else {
+          bounds.minX = Math.min(bounds.minX, x);
+          bounds.maxX = Math.max(bounds.maxX, x);
+          bounds.minY = Math.min(bounds.minY, y);
+          bounds.maxY = Math.max(bounds.maxY, y);
+        }
+      }
+      const nearest = components.reduce((closest, candidate) => {
+        const dx = Math.max(candidate.minX - point.x, 0, point.x - candidate.maxX);
+        const dy = Math.max(candidate.minY - point.y, 0, point.y - candidate.maxY);
+        return Math.hypot(dx, dy) < Math.hypot(
+          Math.max(closest.minX - point.x, 0, point.x - closest.maxX),
+          Math.max(closest.minY - point.y, 0, point.y - closest.maxY)
+        ) ? candidate : closest;
+      });
+      return {
+        x: nearest.minX,
+        y: nearest.minY,
+        width: nearest.maxX - nearest.minX,
+        height: nearest.maxY - nearest.minY
+      };
+    }
+
+    function prefectureDistance(from, to) {
+      const averageLatitude = (from.lat + to.lat) / 2 * Math.PI / 180;
+      return Math.hypot(from.lat - to.lat, (from.lon - to.lon) * Math.cos(averageLatitude));
     }
 
     function changeMapZoom(mapId, action) {
@@ -670,7 +723,8 @@
         });
         return;
       }
-      const scale = Math.min(mapView.max, Math.max(mapView.min, current.scale * (action === 'in' ? mapView.step : 1 / mapView.step)));
+      const max = mapId === 'question-map' ? questionMapMaxZoom : mapView.max;
+      const scale = Math.min(max, Math.max(mapView.min, current.scale * (action === 'in' ? mapView.step : 1 / mapView.step)));
       const center = action === 'in' && current.scale === mapView.min ? current.focus : current.center;
       applyMapZoom(mapId, { ...current, center, scale });
     }
@@ -694,7 +748,7 @@
       $(`${mapId}-zoom-level`).textContent = `${percentage}%`;
       document.querySelectorAll(`.map-control-btn[data-map-id="${mapId}"]`).forEach(button => {
         button.disabled = button.dataset.zoom === 'in'
-          ? zoom.scale === mapView.max
+          ? zoom.scale === (mapId === 'question-map' ? questionMapMaxZoom : mapView.max)
           : button.dataset.zoom === 'out' && zoom.scale === mapView.min;
       });
     }
