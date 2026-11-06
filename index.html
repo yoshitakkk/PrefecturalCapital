@@ -123,12 +123,22 @@
       text-align: center; font-size: clamp(27px, 7vw, 42px); line-height: 1.3;
       font-weight: 900; letter-spacing: -.04em;
     }
+    .question-symbol-wrap {
+      display: grid; place-items: center; width: fit-content; margin: 8px auto 16px;
+      padding: 14px; border-radius: 18px; background: #fff;
+    }
+    .question-symbol { display: block; width: 140px; height: 140px; object-fit: contain; }
     .question-sub { margin: 0 0 20px; color: var(--muted); text-align: center; font-size: 13px; }
     .answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .answer-btn {
       min-height: 62px; padding: 12px 10px; border: 1px solid var(--line);
       border-radius: 15px; background: var(--surface); color: var(--ink); font-size: 14px;
       font-weight: 800; line-height: 1.45; cursor: pointer; transition: .15s ease;
+    }
+    .answer-btn.symbol-answer { display: grid; place-items: center; min-height: 100px; }
+    .symbol-answer img {
+      display: block; width: 68px; height: 68px; padding: 5px;
+      border-radius: 10px; background: #fff; object-fit: contain;
     }
     .answer-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--surface-hover); }
     .answer-btn:disabled { cursor: default; }
@@ -229,7 +239,6 @@
           <div class="hero">
             <span class="eyebrow">🗾 47都道府県を旅しよう</span>
             <h1>日本地図クイズ</h1>
-            <p>地図から県名を見つけたり、県名と県庁所在地を覚えたり。<br>日本の名所や名物にもくわしくなろう。</p>
         </div>
         <div class="setting-group">
           <p class="section-label">出題形式</p>
@@ -237,6 +246,8 @@
             <button type="button" class="choice-btn type-btn" data-type="prefectureToCapital" aria-pressed="true">県名 → 県庁所在地</button>
             <button type="button" class="choice-btn type-btn" data-type="capitalToPrefecture" aria-pressed="false">県庁所在地 → 県名</button>
             <button type="button" class="choice-btn type-btn" data-type="mapToPrefecture" aria-pressed="false">🗾 地図から県名</button>
+            <button type="button" class="choice-btn type-btn" data-type="prefectureToSymbol" aria-pressed="false">県名 → シンボルマーク</button>
+            <button type="button" class="choice-btn type-btn" data-type="symbolToPrefecture" aria-pressed="false">シンボルマーク → 県名</button>
           </div>
         </div>
         <div class="setting-group">
@@ -273,6 +284,9 @@
         <div class="panel question-card">
           <p id="question-kicker" class="question-kicker">この都道府県の県庁所在地は？</p>
           <h2 id="question-text" class="question-text"></h2>
+          <div id="question-symbol-wrap" class="question-symbol-wrap hidden">
+            <img id="question-symbol" class="question-symbol" alt="都道府県のシンボルマーク（県章）">
+          </div>
           <div id="question-map-wrap" class="question-map-wrap hidden">
             <p class="question-map-prompt">色が変わった都道府県を選ぼう</p>
             <div class="map-controls" role="group" aria-label="出題地図のズーム">
@@ -335,8 +349,8 @@
       </section>
     </main>
     <footer>
-      地図から県名を見つけて、日本の県庁所在地・名所・名物を楽しく学ぼう<br>
-      地図データ：<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>（<a href="https://www.geoboundaries.org/">geoBoundaries</a> / ODbL 1.0）
+      地図データ：<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>（<a href="https://www.geoboundaries.org/">geoBoundaries</a> / ODbL 1.0）<br>
+      県章画像：<a href="assets/prefecture-symbols/credits.html">出典・ライセンス（Wikimedia Commons）</a>
     </footer>
   </div>
 
@@ -445,6 +459,11 @@
       { name: '沖縄県', capital: '那覇市', region: '九州・沖縄', sights: '首里城、沖縄美ら海水族館、竹富島', foods: '沖縄そば、ゴーヤーチャンプルー、サーターアンダギー', lat: 26.21, lon: 127.68 }
     ];
 
+    prefectures.forEach((item, index) => {
+      const extension = index < 21 ? 'svg' : 'png';
+      item.symbol = `assets/prefecture-symbols/${String(index + 1).padStart(2, '0')}.${extension}`;
+    });
+
     const state = {
       type: 'prefectureToCapital',
       mode: 'standard',
@@ -546,17 +565,23 @@
       $('question-tracker').textContent = total ? `第 ${state.index + 1} 問 / ${total}` : `第 ${state.index + 1} 問`;
       $('progress-bar').style.width = total ? `${(state.index / total) * 100}%` : `${(state.timeLeft / 60) * 100}%`;
       const isMapQuestion = state.type === 'mapToPrefecture';
+      const isSymbolQuestion = state.type === 'symbolToPrefecture';
+      const isSymbolChoice = state.type === 'prefectureToSymbol';
       $('question-kicker').textContent = isMapQuestion
         ? '地図を見て都道府県を選ぼう'
-        : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
-      $('question-text').textContent = state.type === 'prefectureToCapital' ? current.name : current.capital;
-      $('question-text').classList.toggle('hidden', isMapQuestion);
+        : isSymbolQuestion ? 'このシンボルマークの都道府県は？'
+          : isSymbolChoice ? 'この都道府県のシンボルマークは？'
+            : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
+      $('question-text').textContent = state.type === 'prefectureToCapital' || isSymbolChoice ? current.name : current.capital;
+      $('question-text').classList.toggle('hidden', isMapQuestion || isSymbolQuestion);
+      $('question-symbol-wrap').classList.toggle('hidden', !isSymbolQuestion);
+      if (isSymbolQuestion) $('question-symbol').src = current.symbol;
       $('question-map-wrap').classList.toggle('hidden', !isMapQuestion);
       if (isMapQuestion) drawQuestionMap(current);
-      $('question-sub').textContent = state.type === 'prefectureToCapital' ? '正しい市の名前を選んでね' : '正しい都道府県名を選んでね';
-      if (isMapQuestion) $('question-sub').textContent = '正しい都道府県名を選んでね';
+      $('question-sub').textContent = state.type === 'prefectureToCapital'
+        ? '正しい市の名前を選んでね'
+        : isSymbolChoice ? '正しいシンボルマークを選んでね' : '正しい都道府県名を選んでね';
 
-      const correctAnswer = state.type === 'prefectureToCapital' ? current.capital : current.name;
       const pool = state.questions.filter(item => item !== current);
       const sameRegion = shuffle(pool.filter(item => item.region === current.region));
       const otherRegions = shuffle(pool.filter(item => item.region !== current.region));
@@ -575,14 +600,23 @@
       const options = shuffle([current, ...distractors]);
       const container = $('options-container');
       container.replaceChildren();
-      options.forEach(item => {
+      options.forEach((item, index) => {
         const answer = state.type === 'prefectureToCapital' ? item.capital : item.name;
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'answer-btn';
-        button.textContent = answer;
+        if (isSymbolChoice) {
+          button.classList.add('symbol-answer');
+          button.setAttribute('aria-label', `選択肢 ${index + 1} のシンボルマーク`);
+          const image = document.createElement('img');
+          image.src = item.symbol;
+          image.alt = `選択肢 ${index + 1} のシンボルマーク`;
+          button.appendChild(image);
+        } else {
+          button.textContent = answer;
+        }
         button.dataset.answer = answer;
-        button.dataset.correct = String(answer === correctAnswer);
+        button.dataset.correct = String(item === current);
         button.addEventListener('click', () => chooseAnswer(item, button));
         container.appendChild(button);
       });
@@ -613,7 +647,10 @@
         clickedButton.classList.add('wrong');
       }
       updateScore();
-      $('feedback-badge').textContent = isCorrect ? '🎉 正解！' : `おしい！正解は ${state.type === 'prefectureToCapital' ? current.capital : current.name}`;
+      const correctAnswer = state.type === 'prefectureToCapital'
+        ? current.capital
+        : state.type === 'prefectureToSymbol' ? `${current.name}のシンボルマーク` : current.name;
+      $('feedback-badge').textContent = isCorrect ? '🎉 正解！' : `おしい！正解は ${correctAnswer}`;
       $('feedback-badge').classList.toggle('is-wrong', !isCorrect);
       $('fact-title').textContent = current.name;
       $('fact-capital').textContent = `県庁所在地：${current.capital}`;
