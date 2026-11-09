@@ -128,6 +128,11 @@
       padding: 14px; border-radius: 18px; background: #fff;
     }
     .question-symbol { display: block; width: 140px; height: 140px; object-fit: contain; }
+    .question-food-wrap { margin: 8px auto 16px; }
+    .question-food {
+      display: block; width: min(100%, 480px); max-height: 270px; margin: 0 auto;
+      border: 1px solid var(--line); border-radius: 17px; object-fit: cover;
+    }
     .question-sub { margin: 0 0 20px; color: var(--muted); text-align: center; font-size: 13px; }
     .answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .answer-btn {
@@ -248,6 +253,7 @@
             <button type="button" class="choice-btn type-btn" data-type="mapToPrefecture" aria-pressed="false">🗾 地図から県名</button>
             <button type="button" class="choice-btn type-btn" data-type="prefectureToSymbol" aria-pressed="false">県名 → シンボルマーク</button>
             <button type="button" class="choice-btn type-btn" data-type="symbolToPrefecture" aria-pressed="false">シンボルマーク → 県名</button>
+            <button type="button" class="choice-btn type-btn" data-type="foodToPrefecture" aria-pressed="false">名物料理 → 県名</button>
           </div>
         </div>
         <div class="setting-group">
@@ -286,6 +292,9 @@
           <h2 id="question-text" class="question-text"></h2>
           <div id="question-symbol-wrap" class="question-symbol-wrap hidden">
             <img id="question-symbol" class="question-symbol" alt="都道府県のシンボルマーク（県章）">
+          </div>
+          <div id="question-food-wrap" class="question-food-wrap hidden">
+            <img id="question-food" class="question-food" alt="">
           </div>
           <div id="question-map-wrap" class="question-map-wrap hidden">
             <p class="question-map-prompt">色が変わった都道府県を選ぼう</p>
@@ -350,7 +359,8 @@
     </main>
     <footer>
       地図データ：<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>（<a href="https://www.geoboundaries.org/">geoBoundaries</a> / ODbL 1.0）<br>
-      県章画像：<a href="assets/prefecture-symbols/credits.html">出典・ライセンス（Wikimedia Commons）</a>
+      県章画像：<a href="assets/prefecture-symbols/credits.html">出典・ライセンス（Wikimedia Commons）</a><br>
+      料理画像：<a href="assets/prefecture-foods/credits.html">出典・ライセンス</a>
     </footer>
   </div>
 
@@ -464,6 +474,20 @@
       item.symbol = `assets/prefecture-symbols/${String(index + 1).padStart(2, '0')}.${extension}`;
     });
 
+    const featuredFoods = [
+      '札幌ラーメン', 'せんべい汁', 'わんこそば', '牛タン', 'きりたんぽ', '芋煮', '喜多方ラーメン',
+      '納豆', '宇都宮餃子', '焼きまんじゅう', '草加せんべい', 'なめろう', '江戸前寿司', '崎陽軒シウマイ',
+      'へぎそば', 'ます寿司', '治部煮', '越前がに', 'ほうとう', '信州そば', '飛騨牛', '富士宮やきそば',
+      '味噌カツ', '伊勢うどん', '近江牛', '湯豆腐', 'たこ焼き', '神戸牛', '柿の葉寿司', '梅干し',
+      '松葉ガニ', '出雲そば', 'きびだんご', '広島お好み焼き', 'ふぐ刺し', '徳島ラーメン', '讃岐うどん',
+      '鯛めし', 'かつおのたたき', '博多ラーメン', 'シシリアンライス', '長崎ちゃんぽん', '馬刺し',
+      'とり天', 'チキン南蛮', '鹿児島黒豚', '沖縄そば'
+    ];
+    prefectures.forEach((item, index) => {
+      item.featuredFood = featuredFoods[index];
+      item.foodImage = `assets/prefecture-foods/${String(index + 1).padStart(2, '0')}.jpg`;
+    });
+
     const state = {
       type: 'prefectureToCapital',
       mode: 'standard',
@@ -567,20 +591,29 @@
       const isMapQuestion = state.type === 'mapToPrefecture';
       const isSymbolQuestion = state.type === 'symbolToPrefecture';
       const isSymbolChoice = state.type === 'prefectureToSymbol';
+      const isFoodQuestion = state.type === 'foodToPrefecture';
       $('question-kicker').textContent = isMapQuestion
         ? '地図を見て都道府県を選ぼう'
-        : isSymbolQuestion ? 'このシンボルマークの都道府県は？'
-          : isSymbolChoice ? 'この都道府県のシンボルマークは？'
-            : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
+        : isFoodQuestion ? `${current.featuredFood}が有名な都道府県は？`
+          : isSymbolQuestion ? 'このシンボルマークの都道府県は？'
+            : isSymbolChoice ? 'この都道府県のシンボルマークは？'
+              : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
       $('question-text').textContent = state.type === 'prefectureToCapital' || isSymbolChoice ? current.name : current.capital;
-      $('question-text').classList.toggle('hidden', isMapQuestion || isSymbolQuestion);
+      $('question-text').classList.toggle('hidden', isMapQuestion || isSymbolQuestion || isFoodQuestion);
       $('question-symbol-wrap').classList.toggle('hidden', !isSymbolQuestion);
       if (isSymbolQuestion) $('question-symbol').src = current.symbol;
+      $('question-food-wrap').classList.toggle('hidden', !isFoodQuestion);
+      if (isFoodQuestion) {
+        $('question-food').src = current.foodImage;
+        $('question-food').alt = `${current.featuredFood}の写真`;
+      }
       $('question-map-wrap').classList.toggle('hidden', !isMapQuestion);
       if (isMapQuestion) drawQuestionMap(current);
-      $('question-sub').textContent = state.type === 'prefectureToCapital'
-        ? '正しい市の名前を選んでね'
-        : isSymbolChoice ? '正しいシンボルマークを選んでね' : '正しい都道府県名を選んでね';
+      $('question-sub').textContent = isFoodQuestion
+        ? '写真を見て、正しい都道府県名を選んでね'
+        : state.type === 'prefectureToCapital'
+          ? '正しい市の名前を選んでね'
+          : isSymbolChoice ? '正しいシンボルマークを選んでね' : '正しい都道府県名を選んでね';
 
       const pool = state.questions.filter(item => item !== current);
       const sameRegion = shuffle(pool.filter(item => item.region === current.region));

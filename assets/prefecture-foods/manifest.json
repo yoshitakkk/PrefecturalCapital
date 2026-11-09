@@ -1,0 +1,472 @@
+[
+    {
+        "pref":  "北海道",
+        "dish":  "札幌ラーメン",
+        "path":  "assets/prefecture-foods/01.jpg",
+        "title":  "Sapporo ramen",
+        "source":  "https://commons.wikimedia.org/wiki/File:151010_Sapporo_ramen_at_Susukino_Sapporo_Hokkaido_Japan01s.jpg",
+        "creator":  "663highland",
+        "license":  "CC BY 2.5",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.5/"
+    },
+    {
+        "pref":  "青森県",
+        "dish":  "せんべい汁",
+        "path":  "assets/prefecture-foods/02.jpg",
+        "title":  "せんべい汁",
+        "source":  "https://www.flickr.com/photos/92203585@N00/3046482871",
+        "creator":  "jetalone",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "岩手県",
+        "dish":  "わんこそば",
+        "path":  "assets/prefecture-foods/03.jpg",
+        "title":  "わんこそば",
+        "source":  "https://www.flickr.com/photos/56886057@N00/9772036283",
+        "creator":  "Kuruman",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "宮城県",
+        "dish":  "牛タン",
+        "path":  "assets/prefecture-foods/04.jpg",
+        "title":  "牛タン",
+        "source":  "https://www.flickr.com/photos/91049143@N00/13749112364",
+        "creator":  "bryan...",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "秋田県",
+        "dish":  "きりたんぽ",
+        "path":  "assets/prefecture-foods/05.jpg",
+        "title":  "きりたんぽ",
+        "source":  "https://commons.wikimedia.org/w/index.php?curid=3294084",
+        "creator":  "蛇使いの工藤",
+        "license":  "CC BY-SA 3.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/3.0/"
+    },
+    {
+        "pref":  "山形県",
+        "dish":  "芋煮",
+        "path":  "assets/prefecture-foods/06.jpg",
+        "title":  "芋煮",
+        "source":  "https://www.flickr.com/photos/47385088@N00/2478056750",
+        "creator":  "Kossy@FINEDAYS",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "福島県",
+        "dish":  "喜多方ラーメン",
+        "path":  "assets/prefecture-foods/07.jpg",
+        "title":  "Kitakata ramen at Bannai Otsuka branch",
+        "source":  "https://commons.wikimedia.org/wiki/File:Kitakata-ramen_Bannai_Otsuka_branch.jpg",
+        "creator":  "毒島みるく",
+        "license":  "CC0",
+        "licenseUrl":  "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+        "pref":  "茨城県",
+        "dish":  "納豆",
+        "path":  "assets/prefecture-foods/08.jpg",
+        "title":  "納豆",
+        "source":  "https://www.flickr.com/photos/26226522@N08/2766736919",
+        "creator":  "[puamelia]",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "栃木県",
+        "dish":  "宇都宮餃子",
+        "path":  "assets/prefecture-foods/09.jpg",
+        "title":  "Gyōza",
+        "source":  "https://commons.wikimedia.org/wiki/File:Gy%C5%8Dza_003.jpg",
+        "creator":  "Ocdp",
+        "license":  "CC0",
+        "licenseUrl":  "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+        "pref":  "群馬県",
+        "dish":  "焼きまんじゅう",
+        "path":  "assets/prefecture-foods/10.jpg",
+        "title":  "Yaki manjū of Orita, Takasaki",
+        "source":  "https://commons.wikimedia.org/wiki/File:Yaki_manj%C5%AB_of_Orita,_Takasaki_-_Sep_11,_2012.jpg",
+        "creator":  "yoppy",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "埼玉県",
+        "dish":  "草加せんべい",
+        "path":  "assets/prefecture-foods/11.jpg",
+        "title":  "Miso senbei, omiyage from Soka",
+        "source":  "https://commons.wikimedia.org/wiki/File:Miso_senbei,_omiyage_from_S%C5%8Dka.jpg",
+        "creator":  "Syced",
+        "license":  "CC0",
+        "licenseUrl":  "https://creativecommons.org/publicdomain/zero/1.0/"
+    },
+    {
+        "pref":  "千葉県",
+        "dish":  "なめろう",
+        "path":  "assets/prefecture-foods/12.jpg",
+        "title":  "なめろう",
+        "source":  "https://commons.wikimedia.org/w/index.php?curid=147952336",
+        "creator":  "くろふね",
+        "license":  "CC BY 4.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+        "pref":  "東京都",
+        "dish":  "江戸前寿司",
+        "path":  "assets/prefecture-foods/13.jpg",
+        "title":  "江戸前寿司",
+        "source":  "https://www.flickr.com/photos/36749444@N06/49508716283",
+        "creator":  "Kanesue",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "神奈川県",
+        "dish":  "崎陽軒シウマイ",
+        "path":  "assets/prefecture-foods/14.jpg",
+        "title":  "崎陽軒 シウマイ",
+        "source":  "https://www.flickr.com/photos/25368895@N00/8120952919",
+        "creator":  "ayustety",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "新潟県",
+        "dish":  "へぎそば",
+        "path":  "assets/prefecture-foods/15.jpg",
+        "title":  "へぎそば",
+        "source":  "https://www.flickr.com/photos/37407903@N06/14802371379",
+        "creator":  "nubobo",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "富山県",
+        "dish":  "ます寿司",
+        "path":  "assets/prefecture-foods/16.jpg",
+        "title":  "ます寿司",
+        "source":  "https://www.flickr.com/photos/47573122@N05/16901098423",
+        "creator":  "inazakira",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "石川県",
+        "dish":  "治部煮",
+        "path":  "assets/prefecture-foods/17.jpg",
+        "title":  "治部煮",
+        "source":  "https://www.flickr.com/photos/72859063@N00/15875528257",
+        "creator":  "Nullumayulife",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "福井県",
+        "dish":  "越前がに",
+        "path":  "assets/prefecture-foods/18.jpg",
+        "title":  "Boiled Echizen crab",
+        "source":  "https://commons.wikimedia.org/wiki/File:Boiled_Echizen_crab_(snow_crab)_male_and_female.jpg",
+        "creator":  "さかおり",
+        "license":  "CC BY-SA 4.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+        "pref":  "山梨県",
+        "dish":  "ほうとう",
+        "path":  "assets/prefecture-foods/19.jpg",
+        "title":  "ほうとう",
+        "source":  "https://www.flickr.com/photos/91049143@N00/22098011274",
+        "creator":  "bryan...",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "長野県",
+        "dish":  "信州そば",
+        "path":  "assets/prefecture-foods/20.jpg",
+        "title":  "信州そば",
+        "source":  "https://www.flickr.com/photos/21733281@N00/4203536352",
+        "creator":  "june29",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "岐阜県",
+        "dish":  "飛騨牛",
+        "path":  "assets/prefecture-foods/21.jpg",
+        "title":  "飛騨牛",
+        "source":  "https://www.flickr.com/photos/91049143@N00/15670506519",
+        "creator":  "bryan...",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "静岡県",
+        "dish":  "富士宮やきそば",
+        "path":  "assets/prefecture-foods/22.jpg",
+        "title":  "富士宮やきそば",
+        "source":  "https://commons.wikimedia.org/w/index.php?curid=69665875",
+        "creator":  "girakku",
+        "license":  "CC0",
+        "licenseUrl":  "https://creativecommons.org/publicdomain/zero/1.0/deed.en/"
+    },
+    {
+        "pref":  "愛知県",
+        "dish":  "味噌カツ",
+        "path":  "assets/prefecture-foods/23.jpg",
+        "title":  "味噌カツ",
+        "source":  "https://www.flickr.com/photos/40037997@N02/4734051157",
+        "creator":  "Shinichi Haramizu",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "三重県",
+        "dish":  "伊勢うどん",
+        "path":  "assets/prefecture-foods/24.jpg",
+        "title":  "伊勢うどん",
+        "source":  "https://www.flickr.com/photos/29989965@N00/11709175813",
+        "creator":  "ume-y",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "滋賀県",
+        "dish":  "近江牛",
+        "path":  "assets/prefecture-foods/25.jpg",
+        "title":  "Omi beef rice and Matsusaka beef hamburger steak bento",
+        "source":  "https://commons.wikimedia.org/wiki/File:Omi_Beef_Rice_%26_Matsusaka_Beef_Hamburg_Steak_Bento.jpg",
+        "creator":  "Miyuki Meinaka",
+        "license":  "CC BY-SA 4.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/4.0/"
+    },
+    {
+        "pref":  "京都府",
+        "dish":  "湯豆腐",
+        "path":  "assets/prefecture-foods/26.jpg",
+        "title":  "湯豆腐",
+        "source":  "https://www.flickr.com/photos/26226522@N08/3104629538",
+        "creator":  "[puamelia]",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "大阪府",
+        "dish":  "たこ焼き",
+        "path":  "assets/prefecture-foods/27.jpg",
+        "title":  "たこ焼き",
+        "source":  "https://www.flickr.com/photos/60993083@N00/5377252327",
+        "creator":  "Koji Horaguchi",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "兵庫県",
+        "dish":  "神戸牛",
+        "path":  "assets/prefecture-foods/28.jpg",
+        "title":  "神戸牛",
+        "source":  "https://www.flickr.com/photos/82365211@N00/6816397223",
+        "creator":  "kalleboo",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "奈良県",
+        "dish":  "柿の葉寿司",
+        "path":  "assets/prefecture-foods/29.jpg",
+        "title":  "柿の葉寿司",
+        "source":  "https://www.flickr.com/photos/56886057@N00/8704090235",
+        "creator":  "Kuruman",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "和歌山県",
+        "dish":  "梅干し",
+        "path":  "assets/prefecture-foods/30.jpg",
+        "title":  "梅干し",
+        "source":  "https://www.flickr.com/photos/87545778@N00/14446271239",
+        "creator":  "KuniakiIGARASHI",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "鳥取県",
+        "dish":  "松葉ガニ",
+        "path":  "assets/prefecture-foods/31.jpg",
+        "title":  "Horsehair crab, red king crab, and snow crab",
+        "source":  "https://www.flickr.com/photos/bryansjs/16098776604",
+        "creator":  "bryansjs",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "島根県",
+        "dish":  "出雲そば",
+        "path":  "assets/prefecture-foods/32.jpg",
+        "title":  "出雲そば",
+        "source":  "https://www.flickr.com/photos/30191079@N06/3376214970",
+        "creator":  "puffyjet",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "岡山県",
+        "dish":  "きびだんご",
+        "path":  "assets/prefecture-foods/33.jpg",
+        "title":  "きびだんご",
+        "source":  "https://www.flickr.com/photos/31338008@N08/4126184073",
+        "creator":  "Sekikos",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "広島県",
+        "dish":  "広島お好み焼き",
+        "path":  "assets/prefecture-foods/34.jpg",
+        "title":  "広島お好み焼き",
+        "source":  "https://www.flickr.com/photos/27983255@N00/4299714607",
+        "creator":  "yto",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "山口県",
+        "dish":  "ふぐ刺し",
+        "path":  "assets/prefecture-foods/35.jpg",
+        "title":  "ふぐ刺し",
+        "source":  "https://www.flickr.com/photos/28686305@N07/4852112304",
+        "creator":  "bm.iphone",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "徳島県",
+        "dish":  "徳島ラーメン",
+        "path":  "assets/prefecture-foods/36.jpg",
+        "title":  "Tokushima ramen at Men Oh",
+        "source":  "https://www.flickr.com/photos/87117631@N00/7695236766",
+        "creator":  "Gary Soup",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "香川県",
+        "dish":  "讃岐うどん",
+        "path":  "assets/prefecture-foods/37.jpg",
+        "title":  "讃岐うどん",
+        "source":  "https://www.flickr.com/photos/62068690@N00/2829513453",
+        "creator":  "sekido",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "愛媛県",
+        "dish":  "鯛めし",
+        "path":  "assets/prefecture-foods/38.jpg",
+        "title":  "鯛めし",
+        "source":  "https://www.flickr.com/photos/47173486@N00/3881369270",
+        "creator":  "is_kyoto_jp",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "高知県",
+        "dish":  "かつおのたたき",
+        "path":  "assets/prefecture-foods/39.jpg",
+        "title":  "かつおのたたき",
+        "source":  "https://www.flickr.com/photos/25368895@N00/117911482",
+        "creator":  "ayustety",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "福岡県",
+        "dish":  "博多ラーメン",
+        "path":  "assets/prefecture-foods/40.jpg",
+        "title":  "博多ラーメン",
+        "source":  "https://www.flickr.com/photos/25368895@N00/73514235",
+        "creator":  "ayustety",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "佐賀県",
+        "dish":  "シシリアンライス",
+        "path":  "assets/prefecture-foods/41.jpg",
+        "title":  "Sicilian rice",
+        "source":  "https://www.flickr.com/photos/78919492@N00/17776013811",
+        "creator":  "nimame",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "長崎県",
+        "dish":  "長崎ちゃんぽん",
+        "path":  "assets/prefecture-foods/42.jpg",
+        "title":  "長崎ちゃんぽん",
+        "source":  "https://www.flickr.com/photos/29282750@N00/87235353",
+        "creator":  "Kanko*",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "熊本県",
+        "dish":  "馬刺し",
+        "path":  "assets/prefecture-foods/43.jpg",
+        "title":  "馬刺し",
+        "source":  "https://www.flickr.com/photos/59496030@N02/9011941932",
+        "creator":  "G.A.I.N",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "大分県",
+        "dish":  "とり天",
+        "path":  "assets/prefecture-foods/44.jpg",
+        "title":  "とり天",
+        "source":  "https://www.flickr.com/photos/130229276@N07/40116808251",
+        "creator":  "Tak H.",
+        "license":  "CC BY-SA 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by-sa/2.0/"
+    },
+    {
+        "pref":  "宮崎県",
+        "dish":  "チキン南蛮",
+        "path":  "assets/prefecture-foods/45.jpg",
+        "title":  "チキン南蛮",
+        "source":  "https://www.flickr.com/photos/44124362019@N01/4269229510",
+        "creator":  "yoppy",
+        "license":  "CC BY 2.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/2.0/"
+    },
+    {
+        "pref":  "鹿児島県",
+        "dish":  "鹿児島黒豚",
+        "path":  "assets/prefecture-foods/46.jpg",
+        "title":  "鹿児島 黒豚",
+        "source":  "https://commons.wikimedia.org/w/index.php?curid=152890343",
+        "creator":  "くろふね",
+        "license":  "CC BY 4.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/4.0/"
+    },
+    {
+        "pref":  "沖縄県",
+        "dish":  "沖縄そば",
+        "path":  "assets/prefecture-foods/47.jpg",
+        "title":  "沖縄そば",
+        "source":  "https://commons.wikimedia.org/w/index.php?curid=154818184",
+        "creator":  "くろふね",
+        "license":  "CC BY 4.0",
+        "licenseUrl":  "https://creativecommons.org/licenses/by/4.0/"
+    }
+]
