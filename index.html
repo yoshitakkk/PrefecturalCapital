@@ -133,6 +133,13 @@
       display: block; width: min(100%, 480px); max-height: 270px; margin: 0 auto;
       border: 1px solid var(--line); border-radius: 17px; object-fit: cover;
     }
+    .question-art-wrap {
+      display: grid; justify-items: center; gap: 7px; width: fit-content; min-width: 180px;
+      margin: 12px auto 16px; padding: 18px 24px; border: 1px solid var(--line);
+      border-radius: 18px; background: linear-gradient(145deg, #223550, #172235);
+    }
+    .question-art { font-size: 64px; line-height: 1.2; }
+    .question-art-caption { color: var(--muted); font-size: 11px; font-weight: 800; }
     .question-sub { margin: 0 0 20px; color: var(--muted); text-align: center; font-size: 13px; }
     .answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .answer-btn {
@@ -254,6 +261,9 @@
             <button type="button" class="choice-btn type-btn" data-type="prefectureToSymbol" aria-pressed="false">県名 → シンボルマーク</button>
             <button type="button" class="choice-btn type-btn" data-type="symbolToPrefecture" aria-pressed="false">シンボルマーク → 県名</button>
             <button type="button" class="choice-btn type-btn" data-type="foodToPrefecture" aria-pressed="false">名物料理 → 県名</button>
+            <button type="button" class="choice-btn type-btn" data-type="japanNumberOne" aria-pressed="false">日本一クイズ</button>
+            <button type="button" class="choice-btn type-btn" data-type="landmarkToPrefecture" aria-pressed="false">観光地・世界遺産 → 県名</button>
+            <button type="button" class="choice-btn type-btn" data-type="dialectToPrefecture" aria-pressed="false">方言・ローカルワード → 県名</button>
           </div>
         </div>
         <div class="setting-group">
@@ -295,6 +305,10 @@
           </div>
           <div id="question-food-wrap" class="question-food-wrap hidden">
             <img id="question-food" class="question-food" alt="">
+          </div>
+          <div id="question-art-wrap" class="question-art-wrap hidden">
+            <span id="question-art" class="question-art" aria-hidden="true"></span>
+            <span id="question-art-caption" class="question-art-caption"></span>
           </div>
           <div id="question-map-wrap" class="question-map-wrap hidden">
             <p class="question-map-prompt">色が変わった都道府県を選ぼう</p>
@@ -347,7 +361,7 @@
       <section id="result-screen" class="screen panel result-screen hidden">
         <div class="result-icon" aria-hidden="true">🎉</div>
         <h2>クイズ終了！</h2>
-        <p>47都道府県の旅、おつかれさまでした。</p>
+        <p>日本の地理クイズ、おつかれさまでした。</p>
         <div class="result-stats">
           <div class="result-stat"><span>スコア</span><strong id="final-score">0</strong></div>
           <div class="result-stat"><span>正解率</span><strong id="final-accuracy">0%</strong></div>
@@ -488,6 +502,60 @@
       item.foodImage = `assets/prefecture-foods/${String(index + 1).padStart(2, '0')}.jpg`;
     });
 
+    const numberOneQuestions = [
+      { prefecture: '香川県', question: '面積が一番小さい都道府県は？', fact: '香川県の面積は約1,877 km²で、全国で最も小さい都道府県です。', hint: '四国にある県です。' },
+      { prefecture: '北海道', question: '面積が一番大きい都道府県は？', fact: '北海道は面積約83,424 km²で、全国の都道府県で最も広い地域です。', hint: '日本の最北にあります。' },
+      { prefecture: '滋賀県', question: '湖の面積が一番大きい県は？', fact: '滋賀県には、日本最大の湖である琵琶湖があります。', hint: '琵琶湖がある県です。' },
+      { prefecture: '青森県', question: 'りんごの収穫量が一番多い県は？', fact: '青森県は、りんごの生産量が全国で最も多いことで知られています。', hint: 'りんごとねぶた祭で有名です。' },
+      { prefecture: '山梨県', question: 'ぶどうの収穫量が一番多い県は？', fact: '山梨県は、ぶどうの収穫量が全国で最も多い県として知られています。', hint: '甲府盆地が広がり、果物の栽培が盛んです。' },
+      { prefecture: '東京都', question: '人口が一番多い都道府県は？', fact: '東京都は全国で最も人口が多い都道府県です。', hint: '日本の首都があります。' },
+      { prefecture: '新潟県', question: '日本一長い川、信濃川の河口がある県は？', fact: '日本一長い信濃川は、新潟県で日本海に注ぎます。', hint: '日本海に面し、米どころとしても有名です。' },
+      { prefecture: '鳥取県', question: '人口が一番少ない都道府県は？', fact: '鳥取県は、都道府県の中で人口が最も少ない県です。', hint: '中国地方にあります。' },
+      { prefecture: '沖縄県', question: '日本最西端の有人島がある県は？', fact: '日本最西端の有人島・与那国島は沖縄県にあります。', hint: '日本の南西に位置します。' },
+      { prefecture: '長野県', question: '県庁所在地の標高が一番高い都道府県は？', fact: '長野市は、都道府県庁所在地の中で標高が最も高い都市です。', hint: '日本アルプスに囲まれた県です。' }
+    ];
+    const landmarkQuestions = [
+      { prefecture: '北海道', landmark: '五稜郭', illustration: '⭐', hint: '函館市にある星形の史跡です。' },
+      { prefecture: '岐阜県', landmark: '白川郷', illustration: '🏘️', hint: '飛騨地方にあります。' },
+      { prefecture: '東京都', landmark: '浅草寺', illustration: '🏮', hint: '雷門で知られる寺院です。' },
+      { prefecture: '広島県', landmark: '厳島神社', illustration: '⛩️', hint: '瀬戸内海に浮かぶ宮島の神社です。' },
+      { prefecture: '愛媛県', landmark: '道後温泉', illustration: '♨️', hint: '四国にある歴史ある温泉です。' },
+      { prefecture: '兵庫県', landmark: '姫路城', illustration: '🏯', hint: '白鷺城とも呼ばれます。' },
+      { prefecture: '石川県', landmark: '兼六園', illustration: '🌳', hint: '金沢市にある日本三名園のひとつです。' },
+      { prefecture: '奈良県', landmark: '東大寺', illustration: '🛕', hint: '大仏で知られる古都の寺院です。' },
+      { prefecture: '島根県', landmark: '出雲大社', illustration: '⛩️', hint: '縁結びの神様で知られます。' },
+      { prefecture: '鳥取県', landmark: '鳥取砂丘', illustration: '🏜️', hint: '日本海沿いに広がる砂丘です。' },
+      { prefecture: '栃木県', landmark: '日光東照宮', illustration: '🐒', hint: '「見ざる・言わざる・聞かざる」の彫刻で有名です。' },
+      { prefecture: '沖縄県', landmark: '首里城', illustration: '🏰', hint: '琉球王国ゆかりの城です。' },
+      { prefecture: '熊本県', landmark: '熊本城', illustration: '🏯', hint: '加藤清正が築いた名城です。' },
+      { prefecture: '宮城県', landmark: '松島', illustration: '🏝️', hint: '日本三景のひとつです。' },
+      { prefecture: '和歌山県', landmark: '高野山', illustration: '🛕', hint: '空海が開いた真言密教の聖地です。' },
+      { prefecture: '三重県', landmark: '伊勢神宮', illustration: '⛩️', hint: '「お伊勢さん」と呼ばれる神社です。' },
+      { prefecture: '長野県', landmark: '善光寺', illustration: '🛕', hint: '「牛に引かれて」の伝説でも知られます。' },
+      { prefecture: '福岡県', landmark: '太宰府天満宮', illustration: '⛩️', hint: '学問の神様をまつる神社です。' }
+    ];
+    const dialectQuestions = [
+      { prefecture: '北海道', word: 'なまら', meaning: 'とても、すごく', hint: '「なまらおいしい」のように使います。' },
+      { prefecture: '青森県', word: 'わんつか', meaning: '少し', hint: '「わんつかだけ」のように使います。' },
+      { prefecture: '岩手県', word: 'おでんせ', meaning: 'いらっしゃい', hint: '人を迎えるときの言葉です。' },
+      { prefecture: '宮城県', word: 'いずい', meaning: 'しっくりこない、違和感がある', hint: '服や靴の着心地にも使います。' },
+      { prefecture: '秋田県', word: 'んだ', meaning: 'そうだ、そうです', hint: '相づちとして使う言葉です。' },
+      { prefecture: '茨城県', word: 'ごじゃっぺ', meaning: 'でたらめ、いい加減', hint: '「ごじゃっぺ言うな」のように使います。' },
+      { prefecture: '福島県', word: 'さすけね', meaning: '大丈夫、問題ない', hint: '「気にしなくていいよ」という場面で使います。' },
+      { prefecture: '新潟県', word: 'なじらね', meaning: 'どうですか、いかがですか', hint: '相手の様子をたずねる言葉です。' },
+      { prefecture: '富山県', word: 'きのどくな', meaning: 'ありがとう', hint: '感謝を伝えるときにも使います。' },
+      { prefecture: '福井県', word: 'ほやほや', meaning: 'そうそう、そのとおり', hint: '相手に同意するときの言葉です。' },
+      { prefecture: '京都府', word: 'おおきに', meaning: 'ありがとう', hint: '感謝を伝えるときに使います。' },
+      { prefecture: '愛知県', word: 'でら', meaning: 'とても、すごく', hint: '「でらうまい」のように使います。' },
+      { prefecture: '鳥取県', word: 'がいな', meaning: '大きい、強い', hint: '勢いや大きさを表す言葉です。' },
+      { prefecture: '島根県', word: 'だんだん', meaning: 'ありがとう', hint: '感謝を伝える言葉として知られます。' },
+      { prefecture: '岡山県', word: 'ぼっけぇ', meaning: 'とても、ものすごく', hint: '「ぼっけぇ大きい」のように使います。' },
+      { prefecture: '広島県', word: 'たいぎい', meaning: 'おっくう、疲れる', hint: '面倒に感じるときにも使います。' },
+      { prefecture: '高知県', word: 'こじゃんと', meaning: 'とても、たくさん', hint: '量や程度を強調する言葉です。' },
+      { prefecture: '福岡県', word: 'なおす', meaning: '片付ける、しまう', hint: '「それをなおしといて」のように使います。' },
+      { prefecture: '沖縄県', word: 'ちゅら', meaning: '美しい、きれい', hint: '「ちゅら海」のように使われます。' }
+    ];
+
     const state = {
       type: 'prefectureToCapital',
       mode: 'standard',
@@ -547,7 +615,15 @@
     function startGame() {
       clearInterval(state.timer);
       state.region = $('region-select').value;
-      let pool = prefectures.filter(item => state.region === 'all' || item.region === state.region);
+      const prefecturePool = prefectures.filter(item => state.region === 'all' || item.region === state.region);
+      const records = state.type === 'japanNumberOne' ? numberOneQuestions
+        : state.type === 'landmarkToPrefecture' ? landmarkQuestions
+          : state.type === 'dialectToPrefecture' ? dialectQuestions : null;
+      let pool = records
+        ? records
+          .filter(record => prefecturePool.some(item => item.name === record.prefecture))
+          .map(record => ({ ...prefectures.find(item => item.name === record.prefecture), ...record }))
+        : prefecturePool;
       pool = shuffle(pool);
       state.questions = state.mode === 'standard' ? pool.slice(0, Math.min(10, pool.length)) : pool;
       state.index = 0;
@@ -592,13 +668,24 @@
       const isSymbolQuestion = state.type === 'symbolToPrefecture';
       const isSymbolChoice = state.type === 'prefectureToSymbol';
       const isFoodQuestion = state.type === 'foodToPrefecture';
+      const isNumberOneQuestion = state.type === 'japanNumberOne';
+      const isLandmarkQuestion = state.type === 'landmarkToPrefecture';
+      const isDialectQuestion = state.type === 'dialectToPrefecture';
       $('question-kicker').textContent = isMapQuestion
         ? '地図を見て都道府県を選ぼう'
         : isFoodQuestion ? `${current.featuredFood}が有名な都道府県は？`
-          : isSymbolQuestion ? 'このシンボルマークの都道府県は？'
-            : isSymbolChoice ? 'この都道府県のシンボルマークは？'
-              : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
-      $('question-text').textContent = state.type === 'prefectureToCapital' || isSymbolChoice ? current.name : current.capital;
+          : isNumberOneQuestion ? '日本一クイズ'
+            : isLandmarkQuestion ? 'この観光地・世界遺産がある都道府県は？'
+              : isDialectQuestion ? `「${current.word}」が使われる都道府県は？`
+                : isSymbolQuestion ? 'このシンボルマークの都道府県は？'
+                  : isSymbolChoice ? 'この都道府県のシンボルマークは？'
+                    : state.type === 'prefectureToCapital' ? 'この都道府県の県庁所在地は？' : 'この県庁所在地がある都道府県は？';
+      $('question-text').textContent = isNumberOneQuestion
+        ? current.question
+        : state.type === 'prefectureToCapital' || isSymbolChoice ? current.name
+          : isLandmarkQuestion ? current.landmark
+            : isDialectQuestion ? current.word
+              : current.capital;
       $('question-text').classList.toggle('hidden', isMapQuestion || isSymbolQuestion || isFoodQuestion);
       $('question-symbol-wrap').classList.toggle('hidden', !isSymbolQuestion);
       if (isSymbolQuestion) $('question-symbol').src = current.symbol;
@@ -607,19 +694,33 @@
         $('question-food').src = current.foodImage;
         $('question-food').alt = `${current.featuredFood}の写真`;
       }
+      const showIllustration = isLandmarkQuestion || isDialectQuestion;
+      $('question-art-wrap').classList.toggle('hidden', !showIllustration);
+      if (showIllustration) {
+        $('question-art').textContent = isLandmarkQuestion ? current.illustration : '💬';
+        $('question-art-caption').textContent = isLandmarkQuestion ? '観光地のイラスト' : current.meaning;
+      }
       $('question-map-wrap').classList.toggle('hidden', !isMapQuestion);
       if (isMapQuestion) drawQuestionMap(current);
       $('question-sub').textContent = isFoodQuestion
         ? '写真を見て、正しい都道府県名を選んでね'
-        : state.type === 'prefectureToCapital'
-          ? '正しい市の名前を選んでね'
-          : isSymbolChoice ? '正しいシンボルマークを選んでね' : '正しい都道府県名を選んでね';
+        : isNumberOneQuestion ? '日本一にあてはまる都道府県を選ぼう'
+          : isLandmarkQuestion ? 'イラストと観光地名を見て、県名を選ぼう'
+            : isDialectQuestion ? '地域で異なる代表的な言い方です。県名を選ぼう'
+              : state.type === 'prefectureToCapital'
+                ? '正しい市の名前を選んでね'
+                : isSymbolChoice ? '正しいシンボルマークを選んでね' : '正しい都道府県名を選んでね';
 
-      const pool = state.questions.filter(item => item !== current);
+      const isRecordQuestion = isNumberOneQuestion || isLandmarkQuestion || isDialectQuestion;
+      const regionalPrefectures = prefectures.filter(item => state.region === 'all' || item.region === state.region);
+      const optionPool = isRecordQuestion
+        ? regionalPrefectures.length >= 4 ? regionalPrefectures : prefectures
+        : state.questions;
+      const pool = optionPool.filter(item => item.name !== current.name);
       const sameRegion = shuffle(pool.filter(item => item.region === current.region));
       const otherRegions = shuffle(pool.filter(item => item.region !== current.region));
       let distractors = [...sameRegion, ...otherRegions].slice(0, 3);
-      if (state.type === 'mapToPrefecture') {
+      if (isMapQuestion) {
         const nearestPrefecture = [...prefectures]
           .filter(item => item !== current)
           .sort((a, b) => prefectureDistance(current, a) - prefectureDistance(current, b))[0];
@@ -649,8 +750,8 @@
           button.textContent = answer;
         }
         button.dataset.answer = answer;
-        button.dataset.correct = String(item === current);
-        button.addEventListener('click', () => chooseAnswer(item, button));
+        button.dataset.correct = String(item.name === current.name);
+        button.addEventListener('click', () => chooseAnswer(button));
         container.appendChild(button);
       });
     }
@@ -658,13 +759,14 @@
     function toggleHint() {
       const current = state.questions[state.index];
       const hint = $('hint-text');
-      hint.textContent = `ヒント：${current.region}地方にあります`;
+      hint.textContent = `ヒント：${current.hint || `${current.region}地方にあります`}`;
       hint.classList.toggle('hidden');
     }
 
-    function chooseAnswer(current, clickedButton) {
+    function chooseAnswer(clickedButton) {
       if (state.answered) return;
       state.answered = true;
+      const current = state.questions[state.index];
       const isCorrect = clickedButton.dataset.correct === 'true';
       document.querySelectorAll('.answer-btn').forEach(button => {
         button.disabled = true;
@@ -686,7 +788,7 @@
       $('feedback-badge').textContent = isCorrect ? '🎉 正解！' : `おしい！正解は ${correctAnswer}`;
       $('feedback-badge').classList.toggle('is-wrong', !isCorrect);
       $('fact-title').textContent = current.name;
-      $('fact-capital').textContent = `県庁所在地：${current.capital}`;
+      $('fact-capital').textContent = state.type === 'japanNumberOne' ? current.fact : `県庁所在地：${current.capital}`;
       $('fact-sights').textContent = current.sights;
       $('fact-foods').textContent = current.foods;
       $('map-region').textContent = `${current.region}地方`;
@@ -706,9 +808,9 @@
         const circle = document.createElementNS(ns, 'circle');
         circle.setAttribute('cx', x);
         circle.setAttribute('cy', y);
-        circle.setAttribute('r', item === selected ? '6.3' : '3.2');
-        circle.setAttribute('class', item === selected ? 'map-dot active' : 'map-dot');
-        if (item === selected) {
+        circle.setAttribute('r', item.name === selected.name ? '6.3' : '3.2');
+        circle.setAttribute('class', item.name === selected.name ? 'map-dot active' : 'map-dot');
+        if (item.name === selected.name) {
           const label = document.createElementNS(ns, 'text');
           label.setAttribute('x', Math.min(270, Number(x) + 8).toFixed(1));
           label.setAttribute('y', (Number(y) - 7).toFixed(1));
@@ -850,7 +952,7 @@
 
     function finishGame() {
       clearInterval(state.timer);
-      const answered = state.index + (state.answered ? 1 : 0);
+      const answered = Math.min(state.questions.length, state.index + (state.answered ? 1 : 0));
       const accuracy = answered ? Math.round((state.correct / answered) * 100) : 0;
       $('final-score').textContent = state.score;
       $('final-accuracy').textContent = `${accuracy}%`;
