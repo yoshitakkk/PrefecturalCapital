@@ -281,6 +281,14 @@
           </select>
         </div>
         <div class="setting-group">
+          <p class="section-label">難易度</p>
+          <div class="choice-row two">
+            <button type="button" class="choice-btn difficulty-btn" data-difficulty="easy" aria-pressed="false">🌱 かんたん（2択）</button>
+            <button type="button" class="choice-btn difficulty-btn" data-difficulty="normal" aria-pressed="true">🌿 ふつう（4択）</button>
+            <button type="button" class="choice-btn difficulty-btn" data-difficulty="hard" aria-pressed="false">🔥 むずかしい（6択）</button>
+          </div>
+        </div>
+        <div class="setting-group">
           <p class="section-label">プレイモード</p>
           <div class="choice-row two">
             <button type="button" class="choice-btn mode-btn" data-mode="standard" aria-pressed="true">📝 10問チャレンジ</button>
@@ -558,6 +566,7 @@
 
     const state = {
       type: 'prefectureToCapital',
+      difficulty: 'normal',
       mode: 'standard',
       region: 'all',
       questions: [],
@@ -594,6 +603,12 @@
       button.addEventListener('click', () => {
         state.type = button.dataset.type;
         setPressed('.type-btn', 'type', state.type);
+      });
+    });
+    document.querySelectorAll('.difficulty-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        state.difficulty = button.dataset.difficulty;
+        setPressed('.difficulty-btn', 'difficulty', state.difficulty);
       });
     });
     document.querySelectorAll('.mode-btn').forEach(button => {
@@ -713,13 +728,17 @@
 
       const isRecordQuestion = isNumberOneQuestion || isLandmarkQuestion || isDialectQuestion;
       const regionalPrefectures = prefectures.filter(item => state.region === 'all' || item.region === state.region);
-      const optionPool = isRecordQuestion
-        ? regionalPrefectures.length >= 4 ? regionalPrefectures : prefectures
-        : state.questions;
-      const pool = optionPool.filter(item => item.name !== current.name);
+      const optionPool = isRecordQuestion ? regionalPrefectures : state.questions;
+      const optionCount = { easy: 2, normal: 4, hard: 6 }[state.difficulty];
+      const distractorCount = optionCount - 1;
+      let pool = optionPool.filter(item => item.name !== current.name);
+      if (pool.length < distractorCount) {
+        const existingNames = new Set([current.name, ...pool.map(item => item.name)]);
+        pool = [...pool, ...prefectures.filter(item => !existingNames.has(item.name))];
+      }
       const sameRegion = shuffle(pool.filter(item => item.region === current.region));
       const otherRegions = shuffle(pool.filter(item => item.region !== current.region));
-      let distractors = [...sameRegion, ...otherRegions].slice(0, 3);
+      let distractors = [...sameRegion, ...otherRegions].slice(0, distractorCount);
       if (isMapQuestion) {
         const nearestPrefecture = [...prefectures]
           .filter(item => item !== current)
@@ -729,7 +748,7 @@
           ...sameRegion,
           ...otherRegions,
           ...shuffle(prefectures.filter(item => item !== current))
-        ])].slice(0, 3);
+        ].filter(item => item.name !== current.name))].slice(0, distractorCount);
       }
       const options = shuffle([current, ...distractors]);
       const container = $('options-container');
